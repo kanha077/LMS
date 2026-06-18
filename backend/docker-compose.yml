@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: lms_postgres
+    environment:
+      POSTGRES_USER: lms_user
+      POSTGRES_PASSWORD: secure_password
+      POSTGRES_DB: student_lms
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - lms_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lms_user -d student_lms"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    container_name: lms_backend
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql://lms_user:secure_password@postgres:5432/student_lms
+      JWT_SECRET_KEY: dev-secret-key-change-in-production
+      ENVIRONMENT: development
+      AWS_S3_BUCKET_NAME: lms-local-bucket
+      CORS_ORIGINS: http://localhost:3000,http://localhost:3001,http://localhost:5000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - lms_network
+    volumes:
+      - .:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
+
+networks:
+  lms_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

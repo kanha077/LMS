@@ -1,0 +1,40 @@
+# Environments
+.env
+.env.local
+.venv/
+venv/
+ENV/
+env.bak/
+venv.bak/
+special/
+readme/
+
+# Node / Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+.npm/
+
+# Python / Backend
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+instance/
+.webassets-cache
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
