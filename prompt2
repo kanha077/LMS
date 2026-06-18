@@ -1,0 +1,296 @@
+LMS v2.0 — Full-Stack Rebuild Prompt
+Build a fully functional Learning Management System (LMS) web application with three user roles: Admin, Teacher, and Student. The application must be production-quality, with a classic, professional UI and deep functionality across all roles.
+
+Tech Stack
+
+Frontend: React + Tailwind CSS
+Backend: Python (FastAPI or Flask) + SQLAlchemy ORM
+Database: PostgreSQL (or SQLite for development)
+Auth: JWT-based authentication with role-based access control (RBAC)
+File Storage: Local filesystem or S3-compatible storage for uploads
+Charts: Chart.js or Recharts for analytics
+Rich Text: TipTap or Quill.js for course content editing
+
+
+UI/UX Design Rules (Strict)
+
+Color palette: White, off-white (#F9F9F9), light grey (#F0F0F0), mid grey (#9CA3AF), dark grey (#374151), near-black (#111827). One single accent color: a muted navy (#1E3A5F) or slate blue (#3B5998) for primary actions only.
+No gradients, no glassmorphism, no neon, no glow effects, no sharp color bursts.
+Buttons must look like real physical buttons: solid background, 1px border, subtle box-shadow: 0 1px 2px rgba(0,0,0,0.08), slight darkening on hover, scale-down on active click.
+Typography: Inter or System UI font stack. Clear size hierarchy: 13px labels, 15px body, 18px section headings, 24px page titles. Font weight 400/500 only — no heavy 700 weights in body text.
+Spacing: Generous padding, consistent 8px grid system. Cards use 16–24px internal padding.
+Borders: 1px solid #E5E7EB on cards, inputs, tables. No thick or colored borders.
+Dark mode toggle: Fully supported. Dark mode uses #0F172A background, #1E293B card surfaces, #94A3B8 secondary text.
+Sidebar: Collapsible, with icon-only collapsed state. Active route highlighted with accent color left border and light background tint.
+Tables: Striped rows (#FAFAFA alternate), sticky headers, sortable columns, pagination.
+Forms: Floating labels or clean top-labels. Input focus ring: 2px solid #1E3A5F. Validation errors shown inline in red (#DC2626) below the field.
+Animations: Only functional micro-interactions — skeleton loaders for data fetching, 150ms ease transitions on hover states, smooth sidebar collapse. No decorative animations.
+Modals: Centered, white card on a rgba(0,0,0,0.4) overlay. Escape key closes them. Always include a visible close button.
+Toast notifications: Bottom-right corner, auto-dismiss after 4 seconds. Success = green tint, Error = red tint, Info = blue tint — all muted, not saturated.
+
+
+Database Models
+
+Design and implement all of the following SQLAlchemy models with proper relationships, foreign keys, and indexes:
+User, Tenant (organization), Course, Enrollment, Lesson, LessonModule (content blocks), Assignment, Submission, Quiz, QuizQuestion, QuizOption, QuizAttempt, Grade, Attendance, Resource (file/link library), Message (direct messaging), Notification, Announcement, DiscussionBoard, DiscussionPost, DiscussionReply, Badge, UserBadge, StudyGroup, StudyGroupMember, Note (private per-user per-lesson), AuditLog, SubscriptionTier, CalendarEvent
+
+Authentication & Authorization
+
+JWT access tokens (15-min expiry) + refresh tokens (7-day expiry), stored in httpOnly cookies.
+Role guards on every route: admin_required, teacher_required, student_required.
+Tenancy isolation: all queries scoped to tenant_id automatically via a middleware layer.
+Password hashing with bcrypt. Email verification on signup. Password reset via time-limited token link.
+
+
+👑 Admin Panel
+Analytics Dashboard
+
+Line chart: new user signups over the last 30/60/90 days (toggle)
+Bar chart: active courses per tenant
+Donut chart: user role distribution (Admin / Teacher / Student)
+KPI cards: Total Users, Active Tenants, Courses Created, Assignments Submitted — each showing a percentage change vs. last month
+
+Tenant Management
+
+Table of all organizations with columns: Name, Plan, Users, Courses, Created Date, Status
+Actions: Approve pending tenant, Suspend tenant (with reason modal), Delete tenant (with confirmation requiring typed name), Edit tenant limits
+Tenant detail page: full user list, usage metrics, billing tier
+
+Global User Management
+
+Search and filter users by role, tenant, status, date joined
+Impersonate user (creates a scoped session as that user with a visible banner: "You are viewing as [Name] — Exit")
+Force password reset, change role, deactivate account
+Bulk actions: export selected users to CSV, send email to selected users
+
+Subscription & Billing Tiers
+
+Define Free / Pro / Enterprise tiers with configurable limits: max users, max courses, max storage (GB), feature flags
+Assign or change a tenant's tier
+Display mock revenue per tier as a summary card
+
+Audit Log Viewer
+
+Table of all system events: timestamp, user, tenant, action, IP address, affected record
+Filterable by date range, action type, user, tenant
+Export to CSV
+
+System Health Monitor
+
+Mock real-time metrics displayed as gauges: CPU usage, memory usage, DB query latency, active sessions
+Auto-refreshes every 30 seconds
+
+Global Announcements
+
+Rich-text editor to compose a banner announcement
+Target: All tenants, specific tenant, or specific role
+Set start and end date for visibility
+Preview before publishing
+
+Email Template Configurator
+
+List of system email types: Welcome, Password Reset, Assignment Due, Grade Posted, New Announcement
+For each: editable subject line and body with placeholder variables highlighted (e.g. {{user_name}}, {{course_name}})
+Live preview panel rendered alongside the editor
+
+Data Export
+
+Export any entity (Users, Courses, Enrollments, Grades, Submissions) to CSV or JSON
+Date range filter before export
+Show download progress bar
+
+
+👨‍🏫 Teacher Panel
+Course Builder
+
+Create/edit courses: title, description, cover image, category, tags, published/draft status
+Curriculum builder: drag-and-drop reordering of lessons and modules within a lesson
+Lesson module types: Text (rich-text WYSIWYG), Video (embed URL or upload), PDF embed, Code block (syntax highlighted, non-editable), Image, Divider
+Auto-save every 30 seconds with a visible "Saved" indicator
+
+Resource Library
+
+Upload files (PDF, image, video, ZIP — max 100MB each) or add external links
+Tag resources and attach them to specific courses or lessons
+Students in the course can see and download attached resources
+Storage usage bar showing used vs. allowed quota
+
+Quiz & Exam Builder
+
+Create quizzes attached to a lesson or as standalone
+Question types: Multiple choice (single answer), Multiple choice (multi-select), True/False, Short answer (manual grading)
+Set time limit, max attempts, passing score, and whether to shuffle questions
+Question bank: save questions for reuse across quizzes
+Preview quiz as a student before publishing
+
+Assignment Manager
+
+Create assignments with: title, instructions (rich text), due date, max points, file submission allowed/not
+Rubric builder: define criteria rows and scoring levels (e.g. Excellent / Good / Needs Work) with point values
+Submission inbox: list of all submissions with student name, submission time, file download, grading status
+Grade submissions with rubric selector or manual score entry, plus written feedback
+Bulk grade export to CSV
+
+Student Progress Tracker
+
+Class roster showing each student's: enrollment date, lessons completed / total, last active date, average grade, assignment completion rate
+Heatmap-style calendar showing student activity per day for the past 60 days
+Click any student to see their full breakdown per course
+Filter: show only students who haven't logged in for 7+ days ("at risk" view)
+
+Gradebook
+
+Full grade table: rows = students, columns = assignments/quizzes
+Inline grade editing
+Color coding: green ≥ passing threshold, red < passing threshold (threshold configurable per course)
+Download full gradebook as Excel-formatted CSV
+
+Attendance Tracker
+
+Per-session attendance sheet: mark each student Present / Absent / Late
+Session linked to a calendar event
+View attendance history and per-student attendance percentage
+Export attendance report
+
+Discussion Board Manager
+
+Create boards per course
+Pin, lock, or delete any post
+Reply to student posts as the teacher (labeled "Teacher")
+Moderation queue: flag/remove inappropriate posts
+
+Scheduler
+
+Create calendar events: Live Class, Office Hours, Exam
+Add Zoom/Google Meet link (stored as plain URL, opened in new tab)
+Students enrolled in the course see these events on their calendar
+Send reminder notification 24 hours before event
+
+Class Announcements
+
+Compose announcement with rich text
+Publish to one or multiple courses
+Optionally trigger an email notification to all enrolled students
+Archive older announcements
+
+
+🎓 Student Panel
+Learning Dashboard
+
+"Continue Learning" section: last 3 accessed courses with progress bar and a "Resume" button jumping to the exact last lesson
+Upcoming deadlines widget: next 5 assignments/quizzes due, sorted by due date with days-remaining countdown
+Recent grades widget: last 5 graded items with score and pass/fail indicator
+Quick stats: Courses Enrolled, Assignments Submitted, Average Grade, Badges Earned
+
+Course Player
+
+Sidebar showing lesson list with completion checkmarks
+Content renders each module type correctly (rich text, video embed, PDF viewer, code block)
+Mark lesson as complete button — only appears after scrolling to bottom or video reaching end
+Progress saved per lesson, per user
+
+Interactive Calendar
+
+Full monthly calendar view
+Events: Assignment due dates (red), Quizzes (amber), Live classes (blue), Office hours (green)
+Click event for details popup
+Toggle view: Month / Week / Agenda list
+
+Assignment Submission
+
+Assignment detail page with instructions, rubric preview, and due date
+Drag-and-drop file upload zone with: file type validation, progress bar, cancel option
+Text entry submission option (inline rich text box)
+Submitted state shows: submission timestamp, uploaded file name, download link, current grade and feedback once posted
+
+Quiz Taking Interface
+
+One question per page with progress bar (Question 3 of 10)
+Countdown timer displayed prominently if time-limited
+Flag a question to review later
+Review screen before final submit showing answered / flagged / unanswered counts
+Results page: score, pass/fail, time taken, correct answers shown (if teacher enabled)
+
+Grades & Feedback View
+
+Table of all assignments and quizzes: name, course, due date, submitted date, score, max score, feedback
+Filter by course
+Click any item to see full rubric breakdown and teacher comments
+
+Notifications Center
+
+Bell icon in header with unread count badge
+Dropdown showing latest 10 notifications with type icon, message, timestamp, and link
+Full notifications page: filterable by type (Grade Posted, New Assignment, Announcement, Message)
+Mark all as read button
+
+Direct Messaging
+
+Inbox showing conversation threads with teachers
+Compose new message: select recipient from enrolled teachers
+Real-time-like messaging UI (polling every 10 seconds)
+Unread message count shown in sidebar
+
+Note Taking
+
+Per-lesson notes panel: slide-out drawer alongside course content
+Auto-saves as user types (debounced 1 second)
+Notes page: view all notes across all courses, grouped by course and lesson, with search
+
+Resource Downloads
+
+List of all resources attached to enrolled courses
+Filter by course, type (PDF, video, link, etc.)
+One-click download with file size shown
+External links open in new tab
+
+Gamification
+
+Points awarded for: completing a lesson (+10), submitting an assignment on time (+20), passing a quiz (+30), perfect score (+50), logging in 7 days in a row (+25)
+Badges: "First Lesson," "Perfect Score," "5-Day Streak," "Course Completed," "Top of Class," etc.
+Leaderboard: top 10 students in each course ranked by points (show current user's rank even if outside top 10)
+Badge showcase on student profile page
+
+Study Groups
+
+Create or join a study group linked to a course (max 10 members)
+Group has a shared message board (simple post + reply, no real-time required)
+Group members list with join/leave option
+Group creator can remove members or delete the group
+
+Peer Review
+
+Teacher optionally enables peer review on an assignment
+After submission deadline, each student is assigned 2 anonymous submissions to review
+Student reviews using a simplified rubric and leaves written comments
+Student can see anonymized reviews of their own submission after all reviews are complete
+
+
+Shared / Cross-Role Features
+
+Global search bar in header: searches courses, users (role-scoped), announcements, resources
+Profile page for all users: edit name, avatar (upload), change password, notification preferences
+Responsive design: fully usable on tablet (768px+); mobile layout acceptable but desktop-first
+Skeleton loaders on every data-fetching screen — never show blank white space while loading
+Empty states on every list/table: descriptive message + primary action button (e.g., "No courses yet. Create your first course.")
+Confirmation dialogs for all destructive actions: delete, suspend, remove
+Form validation: client-side with inline errors, server-side errors surfaced in a toast
+Pagination on all tables: 20 rows per page default, configurable to 50/100
+URL-driven state: filters, pagination, and active tab reflected in URL query params so pages are shareable and back-button safe
+
+
+API Design
+
+RESTful API with consistent response envelope:
+json{ "success": true, "data": {}, "meta": { "page": 1, "total": 240 }, "error": null }
+All list endpoints support: ?page=, ?limit=, ?sort=, ?order=asc|desc, ?search=, plus entity-specific filters. Full OpenAPI/Swagger docs auto-generated and accessible at /docs.
+
+Error Handling & Edge Cases
+
+401 → redirect to login, preserve intended URL for post-login redirect
+403 → show "Access Denied" page with back button
+404 → custom page with navigation options
+500 → generic error page with a request ID for support
+Network failure → show inline retry button, never a blank screen
+File upload failure → surface the exact error (file too large, wrong type, quota exceeded)
+Session expiry → silent token refresh; if refresh fails, redirect to login with "Session expired" message
