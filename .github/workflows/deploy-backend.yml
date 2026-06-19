@@ -1,0 +1,37 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy-backend.yml'
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH Key
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Copy backend files via scp
+        run: |
+          # Add the EC2 IP to known_hosts to prevent interactive prompts
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          
+          # Ensure destination directory exists and has correct permissions
+          ssh ubuntu@${{ secrets.EC2_HOST }} "mkdir -p /opt/lms-backend && sudo chown -R ubuntu:ubuntu /opt/lms-backend"
+          
+          # Copy backend code (excluding virtual environments, etc.)
+          rsync -avz --exclude 'venv' --exclude '__pycache__' --exclude '.env' ./backend/ ubuntu@${{ secrets.EC2_HOST }}:/opt/lms-backend/
+
+      - name: Restart Backend Service
+        run: |
+          ssh ubuntu@${{ secrets.EC2_HOST }} "cd /opt/lms-backend && sudo docker-compose down && sudo docker-compose up -d --build"
