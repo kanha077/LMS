@@ -38,3 +38,10 @@ docker-compose.override.yml
 *~
 .DS_Store
 Thumbs.db
+
+# Terraform & Keys
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+*.pem

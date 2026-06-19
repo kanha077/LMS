@@ -7,5 +7,5 @@ variable "aws_region" {
 variable "instance_type" {
   description = "The EC2 instance type for the backend"
   type        = string
-  default     = "t2.micro" # Free tier eligible
+  default     = "t3.micro" # Free tier eligible in most modern AWS accounts/regions
 }
