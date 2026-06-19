@@ -1,18 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-// Dummy components for now
+const Dashboard = () => import('./pages/Dashboard.vue');
+const CourseBuilder = () => import('./pages/CourseBuilder.vue');
+const Analytics = () => import('./pages/Analytics.vue');
+const StudentView = () => import('./pages/StudentView.vue');
 const Login = () => import('./pages/auth/Login.vue');
 const Register = () => import('./pages/auth/Register.vue');
-const Dashboard = () => import('./pages/dashboard/Dashboard.vue');
-const CourseList = () => import('./pages/courses/CourseList.vue');
-const CreateCourse = () => import('./pages/courses/CreateCourse.vue');
-const AssignmentManager = () => import('./pages/assignments/AssignmentManager.vue');
-const Gradebook = () => import('./pages/assignments/Gradebook.vue');
-const UsersList = () => import('./pages/admin/UsersList.vue');
-const TenantsList = () => import('./pages/admin/TenantsList.vue');
-const Settings = () => import('./pages/admin/Settings.vue');
-const QuizBuilder = () => import('./pages/courses/QuizBuilder.vue');
-
 const Landing = () => import('./pages/Landing.vue');
 
 const routes = [
@@ -20,14 +13,9 @@ const routes = [
   { path: '/login', name: 'Login', component: Login, meta: { guest: true } },
   { path: '/register', name: 'Register', component: Register, meta: { guest: true } },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true } },
-  { path: '/courses', name: 'Courses', component: CourseList, meta: { requiresAuth: true } },
-  { path: '/courses/create', name: 'CreateCourse', component: CreateCourse, meta: { requiresAuth: true } },
-  { path: '/quizzes/create', name: 'QuizBuilder', component: QuizBuilder, meta: { requiresAuth: true } },
-  { path: '/assignments/manage', name: 'AssignmentManager', component: AssignmentManager, meta: { requiresAuth: true } },
-  { path: '/gradebook', name: 'Gradebook', component: Gradebook, meta: { requiresAuth: true } },
-  { path: '/users', name: 'Users', component: UsersList, meta: { requiresAuth: true } },
-  { path: '/tenants', name: 'Tenants', component: TenantsList, meta: { requiresAuth: true } },
-  { path: '/settings', name: 'Settings', component: Settings, meta: { requiresAuth: true } },
+  { path: '/dashboard/course-builder', name: 'CourseBuilder', component: CourseBuilder, meta: { requiresAuth: true } },
+  { path: '/dashboard/analytics', name: 'Analytics', component: Analytics, meta: { requiresAuth: true } },
+  { path: '/courses/:id/player', name: 'StudentView', component: StudentView, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({

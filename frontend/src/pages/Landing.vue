@@ -1,132 +1,239 @@
 <template>
-  <div class="min-h-screen bg-slate-50 flex flex-col font-sans relative overflow-hidden text-slate-800">
-    
-    <!-- Animated Gradient Background Orbs -->
-    <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orange-500/20 rounded-full blur-[120px] mix-blend-multiply pointer-events-none animate-pulse"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-slate-300/40 rounded-full blur-[150px] mix-blend-multiply pointer-events-none"></div>
-    <div class="absolute top-[40%] left-[60%] w-[30%] h-[30%] bg-orange-400/20 rounded-full blur-[100px] mix-blend-multiply pointer-events-none"></div>
-
-    <!-- Glassmorphic Navbar -->
-    <nav class="w-full fixed top-0 z-50 bg-white/70 backdrop-blur-lg border-b border-slate-200 px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-400 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20">
-          <span class="text-white font-bold text-xl">S</span>
-        </div>
-        <span class="text-2xl font-extrabold text-slate-900 tracking-tight">Sahayta</span>
+  <div class="bg-background text-text-primary font-body-main antialiased overflow-x-hidden">
+    <!-- TopNavBar -->
+    <nav class="sticky top-0 z-50 flex justify-between items-center px-lg py-md max-w-max-content-width mx-auto bg-surface border-b border-border-soft">
+      <div class="flex items-center gap-base">
+        <span class="font-display-hero text-headline-md text-primary">Sahayta</span>
       </div>
-      <div class="space-x-6 flex items-center">
-        <router-link to="/login" class="text-slate-600 hover:text-orange-500 font-medium transition-colors">Sign In</router-link>
-        <router-link to="/register" class="relative group">
-          <div class="absolute -inset-0.5 bg-orange-500 rounded-lg blur opacity-30 group-hover:opacity-70 transition duration-300"></div>
-          <button class="relative bg-white backdrop-blur-sm border border-slate-200 text-slate-900 px-6 py-2.5 rounded-lg text-sm font-semibold transition-all hover:bg-slate-50">
-            Get Started
-          </button>
-        </router-link>
+      <div class="hidden md:flex items-center gap-xl">
+        <a class="font-nav-link text-nav-link text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#features">Courses</a>
+        <a class="font-nav-link text-nav-link text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Institutions</a>
+        <a class="font-nav-link text-nav-link text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Solutions</a>
+        <a class="font-nav-link text-nav-link text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Pricing</a>
+        <a class="font-nav-link text-nav-link text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">About</a>
+      </div>
+      <div class="flex items-center gap-md">
+        <router-link to="/login" class="hidden sm:block font-button-text text-button-text px-md py-xs text-primary cursor-pointer active:scale-95 transition-all">Log In</router-link>
+        <router-link to="/register" class="font-button-text text-button-text bg-saffron text-white px-lg py-xs rounded-full cursor-pointer hover:bg-accent-hover active:scale-95 transition-all">Get Started</router-link>
       </div>
     </nav>
-
+    
     <!-- Hero Section -->
-    <main class="flex-grow flex flex-col items-center justify-center text-center px-4 pt-40 pb-20 relative z-10">
-      <div class="inline-block mb-6 px-4 py-1.5 rounded-full bg-white/60 border border-slate-200 backdrop-blur-md shadow-sm">
-        <span class="text-sm font-medium text-orange-600">✨ The next generation of learning</span>
-      </div>
-      
-      <h1 class="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight max-w-5xl leading-tight text-slate-900">
-        Master your potential with <br />
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 via-orange-400 to-slate-500 animate-gradient">limitless education.</span>
-      </h1>
-      
-      <p class="text-lg md:text-xl text-slate-600 mb-12 max-w-2xl leading-relaxed">
-        Sahayta delivers an immersive, high-performance ecosystem for educators and students. Build dynamic courses, track progress in real-time, and scale infinitely.
-      </p>
-      
-      <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
-        <router-link to="/register" class="relative group">
-          <div class="absolute -inset-1 bg-orange-500 rounded-xl blur opacity-30 group-hover:opacity-60 transition duration-300"></div>
-          <button class="relative bg-gradient-to-r from-orange-600 to-orange-500 text-white px-10 py-4 rounded-xl text-lg font-bold shadow-lg transition-all hover:scale-105">
-            Start for Free
-          </button>
-        </router-link>
-        <a href="#features" class="bg-white/80 backdrop-blur-md border border-slate-200 text-slate-800 px-10 py-4 rounded-xl text-lg font-bold hover:bg-white transition-all hover:scale-105 shadow-sm">
-          Explore Features
-        </a>
-      </div>
-    </main>
-
-    <!-- Features Section -->
-    <section id="features" class="relative z-10 py-24 px-6 border-t border-slate-200 bg-white/40">
-      <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-20">
-          <h2 class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight">Built for the future.</h2>
-          <p class="text-slate-600 mt-6 text-xl">Powerful tools wrapped in a beautiful, intuitive interface.</p>
+    <header class="hero-gradient relative overflow-hidden py-3xl lg:py-[120px]">
+      <div class="absolute inset-0 opacity-20 pointer-events-none"></div>
+      <div class="max-w-max-content-width mx-auto px-lg grid lg:grid-cols-2 gap-2xl items-center relative z-10">
+        <div class="space-y-xl text-center lg:text-left">
+          <h1 class="font-display-hero text-display-hero text-white max-w-xl">The Modern Operating System for Education</h1>
+          <p class="font-body-main text-[18px] text-[#C4C2E8] leading-relaxed max-w-lg mx-auto lg:mx-0">
+            Build courses, engage learners, and scale your impact — all from one beautifully simple platform.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-md justify-center lg:justify-start pt-md">
+            <button class="font-button-text text-button-text bg-saffron text-white px-3xl py-md rounded-full hover:bg-accent-hover active:scale-95 transition-all">Start for Free</button>
+            <button class="font-button-text text-button-text border-2 border-white text-white px-3xl py-md rounded-full hover:bg-white/10 active:scale-95 transition-all">See a Demo</button>
+          </div>
         </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- Feature 1 -->
-          <div class="p-8 rounded-2xl bg-white/70 backdrop-blur-xl border border-slate-200 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(249,115,22,0.15)] transition-all duration-300 group">
-            <div class="w-14 h-14 bg-orange-50 border border-orange-100 rounded-xl flex items-center justify-center mb-6 text-orange-500 group-hover:scale-110 transition-transform shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-            <h3 class="text-2xl font-bold text-slate-800 mb-3">Dynamic Course Builder</h3>
-            <p class="text-slate-600 leading-relaxed">Create comprehensive curriculums with drag-and-drop modules, lessons, and embedded rich media.</p>
+        <div class="relative mt-xl lg:mt-0">
+          <div class="bg-surface-container/10 backdrop-blur-md border border-white/10 rounded-xl p-base card-shadow overflow-hidden group">
+            <img class="w-full h-auto rounded-lg shadow-2xl transform transition-transform duration-700 group-hover:scale-[1.02]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALtEvvudy67z2SG1z6B2zEaoKa-u0bfD_z5uoExr-jk-jdkCMzgwz0BzlcuHEeAhytUF2BiDQPoB1JAEBnQ3dUKiq86G2rSe7O34qBcjNkMHrjjKLDjeIn5HIHU7F2Hl6irVzS-ol--_t0RLTXH7T6OLJNHI3ceXDmYNRPJYcn0totHDdbFLkDo1k8wNKr0ZbUeohyrSVlRJcABwoNzOwWzPxaS_OGbiQlcAbAtpDnZiHHZWlcTnApphVt4w_Qv9gjwTBVHlD_tvM_" alt="Sahayta LMS Dashboard Mockup"/>
           </div>
-
-          <!-- Feature 2 -->
-          <div class="p-8 rounded-2xl bg-white/70 backdrop-blur-xl border border-slate-200 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(249,115,22,0.15)] transition-all duration-300 group">
-            <div class="w-14 h-14 bg-orange-50 border border-orange-100 rounded-xl flex items-center justify-center mb-6 text-orange-500 group-hover:scale-110 transition-transform shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-            </div>
-            <h3 class="text-2xl font-bold text-slate-800 mb-3">Real-time Analytics</h3>
-            <p class="text-slate-600 leading-relaxed">Track student progress, grading distributions, and completion rates with beautiful, data-rich dashboards.</p>
+          <!-- Ambient Glow Decoration -->
+          <div class="absolute -top-10 -right-10 w-64 h-64 bg-saffron/20 rounded-full blur-[100px] -z-10 animate-pulse"></div>
+          <div class="absolute -bottom-10 -left-10 w-64 h-64 bg-primary/40 rounded-full blur-[100px] -z-10"></div>
+        </div>
+      </div>
+    </header>
+    
+    <!-- Stats Bar -->
+    <section class="bg-surface border-b border-border-soft relative z-20">
+      <div class="max-w-max-content-width mx-auto px-lg py-xl">
+        <div class="flex flex-col md:flex-row justify-around items-center gap-xl md:gap-0">
+          <div class="text-center px-lg animation-target">
+            <div class="font-display-hero text-headline-lg text-primary">50,000+</div>
+            <div class="font-label-caps text-label-caps text-outline uppercase tracking-wider mt-xs">Learners</div>
           </div>
-
-          <!-- Feature 3 -->
-          <div class="p-8 rounded-2xl bg-white/70 backdrop-blur-xl border border-slate-200 hover:-translate-y-2 hover:shadow-[0_15px_40px_rgba(100,116,139,0.15)] transition-all duration-300 group">
-            <div class="w-14 h-14 bg-slate-100 border border-slate-200 rounded-xl flex items-center justify-center mb-6 text-slate-600 group-hover:scale-110 transition-transform shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-            </div>
-            <h3 class="text-2xl font-bold text-slate-800 mb-3">Multi-Tenant Scalability</h3>
-            <p class="text-slate-600 leading-relaxed">Manage multiple institutions or departments securely from a single centralized admin panel.</p>
+          <div class="w-px h-12 bg-border-soft hidden md:block"></div>
+          <div class="text-center px-lg animation-target">
+            <div class="font-display-hero text-headline-lg text-primary">2,000+</div>
+            <div class="font-label-caps text-label-caps text-outline uppercase tracking-wider mt-xs">Courses</div>
+          </div>
+          <div class="w-px h-12 bg-border-soft hidden md:block"></div>
+          <div class="text-center px-lg animation-target">
+            <div class="font-display-hero text-headline-lg text-primary">98%</div>
+            <div class="font-label-caps text-label-caps text-outline uppercase tracking-wider mt-xs">Satisfaction</div>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- Footer -->
-    <footer class="relative z-10 bg-white py-10 px-6 border-t border-slate-200">
-      <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
-        <div class="mb-4 md:mb-0 flex items-center space-x-2">
-          <span class="font-bold text-slate-800">Sahayta</span>
-          <span>&copy; 2026 All rights reserved.</span>
+    
+    <!-- Features Section -->
+    <section class="py-3xl bg-surface-container-lowest" id="features">
+      <div class="max-w-max-content-width mx-auto px-lg">
+        <div class="text-center mb-2xl animation-target">
+          <span class="font-label-caps text-label-caps text-saffron uppercase tracking-[0.2em] font-semibold">What We Offer</span>
+          <h2 class="font-headline-lg text-headline-lg text-primary mt-sm">Everything educators need, nothing they don't</h2>
         </div>
-        <div class="space-x-6">
-          <a href="#" class="hover:text-orange-500 transition-colors">Privacy Policy</a>
-          <a href="#" class="hover:text-orange-500 transition-colors">Terms of Service</a>
-          <a href="#" class="hover:text-orange-500 transition-colors">Contact</a>
+        <div class="grid md:grid-cols-3 gap-xl">
+          <!-- Feature Card 1 -->
+          <div class="animation-target bg-white p-2xl rounded-lg border border-border-soft card-shadow hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 bg-saffron/10 rounded-lg flex items-center justify-center mb-lg">
+              <span class="material-icons-outlined text-saffron text-[28px]">extension</span>
+            </div>
+            <h3 class="font-title-card text-title-card text-primary mb-md">Drag-and-Drop Course Builder</h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Build comprehensive curriculums in minutes with our intuitive visual editor. No technical skills required.
+            </p>
+          </div>
+          <!-- Feature Card 2 -->
+          <div class="animation-target bg-white p-2xl rounded-lg border border-border-soft card-shadow hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 bg-saffron/10 rounded-lg flex items-center justify-center mb-lg">
+              <span class="material-icons-outlined text-saffron text-[28px]">analytics</span>
+            </div>
+            <h3 class="font-title-card text-title-card text-primary mb-md">Real-Time Analytics</h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Track student progress, completion rates, and grades in real-time. Gain deep insights into learning outcomes.
+            </p>
+          </div>
+          <!-- Feature Card 3 -->
+          <div class="animation-target bg-white p-2xl rounded-lg border border-border-soft card-shadow hover:-translate-y-1 transition-all duration-300">
+            <div class="w-12 h-12 bg-saffron/10 rounded-lg flex items-center justify-center mb-lg">
+              <span class="material-icons-outlined text-saffron text-[28px]">corporate_fare</span>
+            </div>
+            <h3 class="font-title-card text-title-card text-primary mb-md">Multi-Tenant Architecture</h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Manage multiple institutions, campuses, or departments from a single centralized dashboard seamlessly.
+            </p>
+          </div>
         </div>
       </div>
+    </section>
+    
+    <!-- Social Proof / Testimonial -->
+    <section class="bg-surface-muted py-3xl overflow-hidden relative">
+      <div class="max-w-max-content-width mx-auto px-lg relative z-10 animation-target">
+        <div class="max-w-3xl mx-auto text-center">
+          <div class="mb-lg">
+            <span class="material-icons-outlined text-border-soft text-[64px]" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+          </div>
+          <blockquote class="font-display-hero text-headline-md italic text-primary leading-tight md:text-[36px] mb-xl">
+            "Sahayta has completely transformed how our faculty delivers content. The focus on structured calm and high-performance tools makes it the most effective platform we've ever used."
+          </blockquote>
+          <div class="flex items-center justify-center gap-md">
+            <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md">
+              <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVX54eYoqA1H6TwsPbpsSWfH-666eTyQ-QpAsQP9uM5Bo_UMVFRqd6REGJCg3Ne97tk4MX8p5jX4_hg1sTFBvhU8GGXyjcsz58LS_LiTvRd2WkeQZkQpdF0Ei9zZUC_Iq46iRcYhKkzWFfDdBA0AZOOh-NCtofPiW2xybJeJvkSf5Yd3e9kBa_NUJll-e91vetlpIK8xzVx2dPEhu0sPlfLs9NbKtOsB9HBtA04C1h7fK7Z67cQI5Y-kQc2OkECr4mznhwYC0TCiPL" alt="Educator"/>
+            </div>
+            <div class="text-left">
+              <p class="font-title-card text-body-main text-primary font-semibold">Dr. Ananya Sharma</p>
+              <p class="font-body-sm text-body-sm text-outline">Dean of Innovation, Prestige Institute</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Decorative Background Element -->
+      <div class="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 opacity-5">
+        <span class="material-icons-outlined text-[400px]">school</span>
+      </div>
+    </section>
+    
+    <!-- Final CTA Section -->
+    <section class="hero-gradient py-3xl text-center relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10 pointer-events-none"></div>
+      <div class="max-w-max-content-width mx-auto px-lg relative z-10 animation-target">
+        <h2 class="font-display-hero text-display-hero-mobile md:text-display-hero text-white mb-xl">Ready to transform how you teach?</h2>
+        <button class="font-button-text text-button-text bg-saffron text-white px-3xl py-md rounded-full hover:bg-accent-hover active:scale-95 transition-all shadow-xl shadow-saffron/20">Get Started Free</button>
+        <p class="text-[#C4C2E8] font-body-sm mt-lg">No credit card required. Cancel anytime.</p>
+      </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-primary text-on-primary w-full py-3xl px-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-xl border-t border-white/5">
+      <div class="space-y-md max-w-xs">
+        <span class="font-display-hero text-headline-md text-on-primary">Sahayta</span>
+        <p class="font-body-sm text-body-sm text-[#9896B8] leading-relaxed">
+          © 2024 Sahayta LMS. Empowering Authority in Education. Built for institutions that demand excellence.
+        </p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-xl">
+        <div class="space-y-sm">
+          <p class="font-label-caps text-label-caps text-white uppercase opacity-50">Platform</p>
+          <ul class="space-y-xs">
+            <li><a class="font-body-sm text-body-sm text-[#9896B8] hover:text-white transition-colors" href="#">Courses</a></li>
+            <li><a class="font-body-sm text-body-sm text-[#9896B8] hover:text-white transition-colors" href="#">Analytics</a></li>
+            <li><a class="font-body-sm text-body-sm text-[#9896B8] hover:text-white transition-colors" href="#">Security</a></li>
+          </ul>
+        </div>
+        <div class="space-y-sm">
+          <p class="font-label-caps text-label-caps text-white uppercase opacity-50">Legal</p>
+          <ul class="space-y-xs">
+            <li><a class="font-body-sm text-body-sm text-[#9896B8] hover:text-white transition-colors" href="#">Privacy Policy</a></li>
+            <li><a class="font-body-sm text-body-sm text-[#9896B8] hover:text-white transition-colors" href="#">Terms of Service</a></li>
+            <li><a class="font-body-sm text-body-sm text-[#9896B8] hover:text-white transition-colors" href="#">Cookie Policy</a></li>
+          </ul>
+        </div>
+        <div class="space-y-sm">
+          <p class="font-label-caps text-label-caps text-white uppercase opacity-50">Support</p>
+          <ul class="space-y-xs">
+            <li><a class="font-body-sm text-body-sm text-[#9896B8] hover:text-white transition-colors" href="#">Help Center</a></li>
+            <li><a class="font-body-sm text-body-sm text-[#9896B8] hover:text-white transition-colors" href="#">Contact Support</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="flex gap-md self-start md:self-center">
+        <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-saffron transition-all group" href="#">
+          <span class="material-icons-outlined text-[#9896B8] group-hover:text-white">language</span>
+        </a>
+        <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-saffron transition-all group" href="#">
+          <span class="material-icons-outlined text-[#9896B8] group-hover:text-white">mail</span>
+        </a>
+        <a class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-saffron transition-all group" href="#">
+          <span class="material-icons-outlined text-[#9896B8] group-hover:text-white">share</span>
+        </a>
+      </div>
     </footer>
-
   </div>
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault()
+      const target = document.querySelector(this.getAttribute('href'))
+      if(target) {
+        target.scrollIntoView({
+          behavior: 'smooth'
+        })
+      }
+    })
+  })
+
+  // Simple visibility observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('opacity-100')
+        entry.target.classList.remove('opacity-0', 'translate-y-10')
+      }
+    })
+  }, { threshold: 0.1 })
+
+  document.querySelectorAll('.animation-target').forEach(el => {
+    el.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-10')
+    observer.observe(el)
+  })
+})
 </script>
 
 <style>
-@keyframes gradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Icons+Outlined');
+
+.hero-gradient {
+  background: linear-gradient(135deg, #1E1B4B 0%, #070235 100%);
 }
-.animate-gradient {
-  background-size: 200% auto;
-  animation: gradient 4s linear infinite;
+.card-shadow {
+  box-shadow: 0 1px 4px rgba(30, 27, 75, 0.08);
 }
 </style>
