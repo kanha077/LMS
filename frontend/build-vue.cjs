@@ -2,10 +2,8 @@ const fs = require('fs');
 const path = require('path');
 
 const filesToProcess = [
-  { source: 'dashboard.html', target: 'src/pages/Dashboard.vue' },
-  { source: 'course_builder.html', target: 'src/pages/CourseBuilder.vue' },
-  { source: 'analytics.html', target: 'src/pages/Analytics.vue' },
-  { source: 'student_view.html', target: 'src/pages/StudentView.vue' }
+  { source: 'auth.html', target: 'src/pages/auth/Login.vue' },
+  { source: 'auth.html', target: 'src/pages/auth/Register.vue' }
 ];
 
 filesToProcess.forEach(fileInfo => {
@@ -22,7 +20,7 @@ filesToProcess.forEach(fileInfo => {
       bodyContent = bodyContent.replace(/<script>[\s\S]*?<\/script>/gi, '');
       
       // Create Vue component structure
-      const vueComponent = `<template>\n  <div>\n    ${bodyContent}\n  </div>\n</template>\n\n<script setup>\n</script>\n\n<style scoped>\n/* Copy any specific styles if needed, or rely on global Tailwind classes */\n</style>\n`;
+      const vueComponent = `<template>\n  <div>\n    ${bodyContent}\n  </div>\n</template>\n\n<script setup>\n</script>\n\n<style scoped>\n</style>\n`;
       
       // Ensure directory exists
       const targetDir = path.dirname(fileInfo.target);
