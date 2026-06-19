@@ -1,108 +1,77 @@
-# Multi-Tenant Learning Management System (LMS)
+# Sahayta LMS
 
-A robust, full-stack, multi-tenant Educational Learning Management System built from the ground up. This system is designed to allow multiple independent schools/organizations (tenants) to operate on a single shared backend infrastructure while keeping their data securely isolated.
+Sahayta is a modern, scalable Learning Management System (LMS) designed with a clean, professional aesthetic. It supports a multi-tenant architecture, dynamic course building, quizzes, and comprehensive student tracking.
 
-## 🚀 Tech Stack
+## Technology Stack
 
-### Backend
-* **Framework**: FastAPI (Python)
-* **Database**: PostgreSQL
-* **ORM**: SQLAlchemy
-* **Authentication**: JWT (JSON Web Tokens) with OAuth2
-* **Infrastructure**: Docker & Docker Compose
-
-### Frontend
-* **Framework**: Vue 3 (Composition API)
-* **Build Tool**: Vite
-* **Styling**: Tailwind CSS v3
-* **State Management**: Pinia
-* **Routing**: Vue Router
+- **Frontend**: Vue 3, Vite, Tailwind CSS, Pinia (State Management), Vue Router
+- **Backend**: Python 3.10+, FastAPI, SQLAlchemy (SQLite/PostgreSQL), PyJWT, Passlib
+- **Infrastructure as Code**: Terraform
+- **Configuration Management**: Ansible
+- **CI/CD**: GitHub Actions
+- **Hosting**: AWS (S3 for Frontend, EC2 for Backend & Database)
 
 ---
 
-## 🎯 Key Features
+## Architecture Overview
 
-1. **True Multi-Tenancy**: Organizations can dynamically register. The system assigns them a unique subdomain and logically isolates their users, courses, and assignments in the PostgreSQL database using `tenant_id` foreign keys.
-2. **Role-Based Dashboards**: 
-   * **Students**: Can view enrolled courses, submit assignments, and track their GPA.
-   * **Teachers**: Can create courses, publish assignments, and grade student submissions.
-   * **Admins**: Can view system-wide analytics, tenant health, and manage users.
-3. **Automated Database Seeding**: A built-in Python script to instantly populate the database with mock tenants, users, and courses for testing.
+To ensure maximum cost-efficiency while maintaining a professional deployment architecture, Sahayta utilizes a hybrid deployment model:
+
+1. **Static Frontend**: The Vue.js application is compiled into static HTML/CSS/JS and hosted directly on an **Amazon S3 Bucket** configured for static web hosting. This ensures lightning-fast load times and infinite scalability at almost zero cost.
+2. **Backend Monolith**: The FastAPI backend and the database (PostgreSQL via Docker) are hosted together on a single **AWS EC2 `t3.micro` instance**. This keeps the infrastructure entirely within the AWS Free Tier while still supporting containerized, modern application standards.
 
 ---
 
-## 📂 Project Structure
+## CI/CD Pipeline Setup
 
-The project is split into two completely decoupled repositories/folders:
+Sahayta features a 100% automated Continuous Integration and Continuous Deployment (CI/CD) pipeline powered by GitHub Actions, Terraform, and Ansible. 
 
-```text
-/
-├── backend/                  # FastAPI Application
-│   ├── app/
-│   │   ├── models/           # SQLAlchemy Database Entities (Tenant, User, Course, etc.)
-│   │   ├── routes/           # API Endpoints (Auth, Users, Courses, Assignments)
-│   │   ├── schemas/          # Pydantic Models for Input Validation
-│   │   ├── middleware/       # Custom middleware (e.g., Tenant isolation)
-│   │   └── security.py       # Password hashing and JWT generation
-│   ├── alembic/              # Database Migration scripts
-│   ├── seed_db.py            # Python script to seed mock data
-│   └── docker-compose.yml    # Docker configuration for FastAPI & PostgreSQL
-│
-└── frontend/                 # Vue 3 Application
-    ├── src/
-    │   ├── components/       # Reusable Vue components (Navbar, Sidebar, Spinner, Alerts)
-    │   ├── pages/            # View components (Dashboards, Auth, Courses, Admin)
-    │   ├── stores/           # Pinia State Management (auth.js)
-    │   ├── api.js            # Axios client with JWT interceptors
-    │   └── router.js         # Vue Router configuration & Auth Guards
-    ├── tailwind.config.js    # Tailwind CSS Configuration
-    └── vite.config.js        # Vite bundler configuration
-```
+### 1. Infrastructure Provisioning (Terraform)
+All AWS infrastructure is defined as code in the `infrastructure/terraform` directory. 
+Running `terraform apply` automatically creates:
+- A Virtual Private Cloud (VPC) and Subnets.
+- Security Groups (allowing ports 80, 443, 22, and 5000).
+- An EC2 Instance for the backend.
+- An S3 Bucket for the frontend.
+- An RSA SSH Key Pair (`lms-terraform-key.pem`) for server access.
+
+### 2. Configuration Management (Ansible)
+Server configuration is handled by Ansible (`infrastructure/ansible/playbook.yml`). You do not need to run Ansible manually! The GitHub Actions pipeline automatically runs this playbook on the EC2 server during deployment to:
+- Install Docker and Docker-Compose.
+- Create necessary application directories (`/opt/lms-backend`).
+- Configure user permissions.
+
+### 3. Automated Deployments (GitHub Actions)
+Whenever code is pushed to the `main` branch, GitHub Actions automatically takes over.
+
+**Frontend Workflow (`deploy-frontend.yml`)**:
+- Triggers when files in `frontend/` change.
+- Installs Node.js dependencies.
+- Runs `npm run build` to compile the Vue app.
+- Uses the AWS CLI to sync the compiled `dist/` folder directly to the S3 bucket.
+
+**Backend Workflow (`deploy-backend.yml`)**:
+- Triggers when files in `backend/` change.
+- Installs Ansible on the GitHub Runner.
+- Connects to the EC2 server and runs the Ansible playbook to ensure Docker is installed.
+- Securely copies (`scp`/`rsync`) the Python backend code to the server.
+- Runs `docker-compose down && docker-compose up -d --build` to reboot the FastAPI and Database containers with the latest code.
 
 ---
 
-## 🛠️ Installation & Setup Guide
+## Developer Guide: Recreating the Infrastructure
 
-To run this project locally, you will need **Docker Desktop** and **Node.js** installed on your machine.
+If you ever destroy the AWS infrastructure (via `terraform destroy`) and need to recreate it, follow these steps to restore the CI/CD pipeline:
 
-### 1. Start the Backend (Docker)
-The backend is fully containerized. Docker will automatically spin up the PostgreSQL database, run the Alembic migrations, and start the FastAPI server on port `5000`.
-
-```bash
-cd backend
-docker-compose up --build
-```
-*The API will now be available at `http://localhost:5000`*
-
-### 2. Start the Frontend
-Open a **new** terminal window, navigate to the frontend directory, install the NPM packages, and start the Vite development server.
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-*The Web Application will now be available at `http://localhost:3001`*
-
-### 3. Seed the Database
-To easily test the application without manually registering a bunch of accounts, you can run the provided database seeder script. While the backend Docker container is running, open a terminal and run:
-
-```bash
-cd backend
-docker exec lms_backend python seed_db.py
-```
-
-### 4. Test the Application
-You can now log in at `http://localhost:3001` using any of the seeded accounts to explore the different role-based views!
-
-**Teacher Account** (Creates courses & assignments):
-* **Email**: `test@mail`
-* **Password**: `test123`
-
-**Student Account** (Views courses & submits work):
-* **Email**: `student@test.com`
-* **Password**: `test123`
-
-**Admin Account** (System-wide analytics):
-* **Email**: `admin@test.com`
-* **Password**: `test123`
+1. Navigate to `infrastructure/terraform` and run:
+   ```bash
+   terraform apply
+   ```
+2. Note the **Public IP Address** and **S3 Bucket URL** outputted by Terraform.
+3. Update the `API_BASE_URL` in `frontend/src/api.js` to point to `http://<NEW_EC2_IP>:5000/api/v1`.
+4. Go to your GitHub Repository -> Settings -> Secrets and Variables -> Actions.
+5. Update the following secrets:
+   - `EC2_HOST`: The new IP address of the EC2 instance.
+   - `EC2_SSH_KEY`: The complete contents of the newly generated `lms-terraform-key.pem` file.
+   - `S3_BUCKET_NAME`: The name of the new S3 bucket.
+6. Push your code to GitHub. The CI/CD pipeline will automatically configure the blank server, install Docker, and deploy the application!
