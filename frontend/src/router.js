@@ -13,8 +13,10 @@ const TenantsList = () => import('./pages/admin/TenantsList.vue');
 const Settings = () => import('./pages/admin/Settings.vue');
 const QuizBuilder = () => import('./pages/courses/QuizBuilder.vue');
 
+const Landing = () => import('./pages/Landing.vue');
+
 const routes = [
-  { path: '/', redirect: '/dashboard' },
+  { path: '/', name: 'Landing', component: Landing, meta: { guest: true } },
   { path: '/login', name: 'Login', component: Login, meta: { guest: true } },
   { path: '/register', name: 'Register', component: Register, meta: { guest: true } },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard, meta: { requiresAuth: true } },
