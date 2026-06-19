@@ -25,6 +25,17 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
+      - name: Install Ansible
+        run: sudo apt-get update && sudo apt-get install -y ansible
+
+      - name: Run Ansible Playbook to configure server
+        working-directory: ./infrastructure/ansible
+        run: |
+          echo "[backend]" > inventory.ini
+          echo "${{ secrets.EC2_HOST }}" >> inventory.ini
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+          ansible-playbook -i inventory.ini playbook.yml
+
       - name: Copy backend files via scp
         run: |
           # Add the EC2 IP to known_hosts to prevent interactive prompts
