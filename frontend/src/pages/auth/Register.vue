@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
 import apiClient from '../../api';
@@ -56,10 +56,14 @@ import apiClient from '../../api';
 const router = useRouter();
 const authStore = useAuthStore();
 
-const organizationName = ref('');
-const fullName = ref('');
-const email = ref('');
-const password = ref('');
+const form = reactive({
+  tenant_name: '',
+  full_name: '',
+  email: '',
+  password: '',
+  role: 'student'
+});
+
 const error = ref('');
 const loading = ref(false);
 
@@ -68,12 +72,7 @@ const handleRegister = async () => {
   loading.value = true;
   
   try {
-    const response = await apiClient.post('/auth/register', {
-      tenant_name: organizationName.value,
-      full_name: fullName.value,
-      email: email.value,
-      password: password.value,
-    });
+    const response = await apiClient.post('/auth/register', form);
     
     authStore.setUser(response.data.data.user, response.data.data.access_token);
     
